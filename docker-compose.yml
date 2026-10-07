@@ -1,0 +1,9 @@
+services:
+  sortvision:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+      - ./outputs:/app/outputs
+    command: python -m src.train

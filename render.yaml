@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: sortvision
+    env: docker
+    plan: free
+    healthCheckPath: /api/health
+    autoDeploy: true
