@@ -4,3 +4,4 @@ venv/
 .env
 .ipynb_checkpoints/
 .hf_cache/
+models/sortvision_cnn_resnet50.keras
