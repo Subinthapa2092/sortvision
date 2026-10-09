@@ -2,6 +2,10 @@ services:
   - type: web
     name: sortvision
     env: docker
-    plan: free
+    # Standard (2 GB RAM, about 25 USD per month) is the smallest Render plan
+    # with enough memory. The app needs roughly 1 GB at peak, so the Free and
+    # Starter plans (512 MB each) run out of memory. See the Deployment
+    # section of the README for the measurements.
+    plan: standard
     healthCheckPath: /api/health
     autoDeploy: true

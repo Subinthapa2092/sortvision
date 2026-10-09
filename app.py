@@ -44,15 +44,15 @@ _model = None
 def get_model():
     global _model
     if _model is None:
-        if not os.path.exists(config.CNN_MODEL_PATH):
+        if not os.path.exists(config.APP_MODEL_PATH):
             raise HTTPException(
                 status_code=503,
                 detail=(
-                    f"No trained model found at {config.CNN_MODEL_PATH}. "
+                    f"No trained model found at {config.APP_MODEL_PATH}. "
                     "Train one first with: python -m src.train"
                 ),
             )
-        _model = tf.keras.models.load_model(config.CNN_MODEL_PATH)
+        _model = tf.keras.models.load_model(config.APP_MODEL_PATH)
     return _model
 
 
@@ -151,7 +151,7 @@ async def explain(file: UploadFile = File(...)):
 @app.get("/api/health")
 def health():
     return {
-        "model_available": os.path.exists(config.CNN_MODEL_PATH),
-        "model_path": config.CNN_MODEL_PATH,
+        "model_available": os.path.exists(config.APP_MODEL_PATH),
+        "model_path": config.APP_MODEL_PATH,
         "classes": config.CLASS_NAMES,
     }

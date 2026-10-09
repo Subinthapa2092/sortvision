@@ -32,6 +32,12 @@ os.makedirs(OUTPUTS_DIR, exist_ok=True)
 
 CNN_MODEL_PATH = os.path.join(MODEL_DIR, "sortvision_cnn.keras")
 
+# The model the web app serves. Kept separate from CNN_MODEL_PATH on purpose:
+# train.py builds its save paths from CNN_MODEL_PATH, so pointing
+# CNN_MODEL_PATH at a transfer model would make a later from scratch
+# training run overwrite it.
+APP_MODEL_PATH = os.path.join(MODEL_DIR, "sortvision_cnn_efficientnet_b0.keras")
+
 # --- Dataset -----------------------------------------------------------------
 HF_DATASET_NAME = "TrashBusters/combined"
 
