@@ -8,6 +8,17 @@ The project compares a from scratch CNN against transfer learning with
 MobileNetV2, EfficientNetB0, and ResNet50, adds Grad-CAM explainability, and
 includes a web app that supports both image upload and live webcam capture.
 
+## Live Demo
+
+| Link | What it is |
+| ---- | ---------- |
+| https://sortvission.vercel.app/ | The web page, hosted on Vercel. |
+| https://sortvision-bw99.onrender.com/ | The full app, hosted on Render. It serves the page and runs the model. |
+
+Both links use the same model. The Render service is the backend, so the
+Vercel page needs it to be running. If the first photo is slow, the model is
+loading, which only happens after a restart.
+
 ## Quick Start
 
 There are two ways to use this project, and they need different things.
@@ -416,7 +427,7 @@ python -m src.explain --image_path path/to/image.jpg --model_path models/sortvis
 Saves a heatmap overlay to `outputs/gradcam_overlay.png`. It works for the
 from scratch CNN and for all three transfer models. For transfer models the
 target is the backbone's final feature map. The same explanation is available
-in the web app through the "Show what the model saw" button after a
+in the web app through the "See why" button after a
 prediction.
 
 ## Single Image Prediction
@@ -481,6 +492,10 @@ sortvision/
     style.css
   templates/
     index.html
+  vercel-frontend/
+    index.html
+    script.js
+    style.css
   .dockerignore
   .gitignore
   app.py
@@ -553,6 +568,19 @@ Free web services also spin down after 15 minutes without traffic.
 
 `render.yaml` is therefore set to the Standard plan. Creating the service from
 it starts a paid plan, so confirm the cost before deploying.
+
+The project is deployed on Render at https://sortvision-bw99.onrender.com/ as
+a Docker web service on the Standard plan, with the health check path set to
+`/api/health`.
+
+### Vercel
+
+The `vercel-frontend/` folder holds a static copy of the page (`index.html`,
+`style.css`, `script.js`) that is deployed on Vercel at
+https://sortvission.vercel.app/. Its `script.js` sets `API_BASE` to the Render
+URL, so every prediction and Grad-CAM request goes to the Render backend. The
+Vercel project uses `vercel-frontend` as its root directory. If the Render URL
+changes, update `API_BASE` in `vercel-frontend/script.js`.
 
 ### Hugging Face Spaces
 
