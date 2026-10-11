@@ -4,33 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>SortVision</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%233F7D4F'/%3E%3Cpath d='M9 13l3-6h8l3 6M9 13h14M9 13l2 10h10l2-10' stroke='white' stroke-width='1.8' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
+<meta name="description" content="Snap a photo of waste and see which bin it goes in.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232E7D57'/%3E%3Cpath d='M8 12h16M13 12V9h6v3M10 12l1.5 11h9L22 12' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar__inner">
-    <div class="brand">
-      <svg class="brand__mark" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="32" height="32" rx="7" fill="var(--leaf)"/>
-        <path d="M9 13l3-6h8l3 6M9 13h14M9 13l2 10h10l2-10" stroke="white" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
-      </svg>
-      <span class="brand__name">SortVision</span>
-    </div>
-    <span class="topbar__tag">Research prototype</span>
-  </div>
-</header>
-
 <main class="page">
 
+  <header class="brand">
+    <svg class="brand__mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="#2E7D57"/>
+      <path d="M8 12h16M13 12V9h6v3M10 12l1.5 11h9L22 12" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="brand__name">SortVision</span>
+  </header>
+
   <section class="intro">
-    <p class="kicker">Waste image classifier</p>
-    <h1>What kind of waste is this?</h1>
-    <p class="lede">Upload a photo, or use your camera. The model sorts it into a category.</p>
+    <h1>Snap it. Sort it.</h1>
+    <p class="lede">Add a photo of one item.</p>
   </section>
 
   <div class="tabs" role="tablist">
@@ -45,19 +40,18 @@
         <input type="file" id="file-input" accept="image/*" hidden>
 
         <div class="dropzone__empty" id="empty-state">
-          <svg class="dropzone__icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="14" width="48" height="36" rx="3" stroke="currentColor" stroke-width="2"/>
+          <svg class="dropzone__icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <rect x="8" y="14" width="48" height="36" rx="5" stroke="currentColor" stroke-width="2"/>
             <circle cx="24" cy="28" r="5" stroke="currentColor" stroke-width="2"/>
             <path d="M8 44l12-10 8 6 12-14 16 18" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
           </svg>
-          <p class="dropzone__label">Drop an image, or click to browse</p>
-          <p class="dropzone__hint">Any size, resized automatically</p>
+          <p class="dropzone__label">Drop a photo or tap to choose</p>
         </div>
 
-        <img id="preview-img" class="dropzone__preview" alt="Uploaded photo preview" hidden>
+        <img id="preview-img" class="dropzone__preview" alt="Your photo" hidden>
 
-        <button type="button" id="remove-btn" class="remove-btn" hidden aria-label="Remove image">
-          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <button type="button" id="remove-btn" class="remove-btn" hidden aria-label="Remove photo">
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
         </button>
@@ -68,11 +62,11 @@
       <div class="camera-view" id="camera-view">
         <video id="camera-video" autoplay playsinline muted hidden></video>
         <canvas id="camera-canvas" hidden></canvas>
-        <img id="camera-preview" alt="Captured photo" hidden>
+        <img id="camera-preview" alt="Your photo" hidden>
 
         <div class="camera-view__empty" id="camera-empty">
-          <svg class="dropzone__icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="18" width="48" height="32" rx="3" stroke="currentColor" stroke-width="2"/>
+          <svg class="dropzone__icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+            <rect x="8" y="18" width="48" height="32" rx="5" stroke="currentColor" stroke-width="2"/>
             <path d="M22 18l4-6h12l4 6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
             <circle cx="32" cy="34" r="9" stroke="currentColor" stroke-width="2"/>
           </svg>
@@ -82,49 +76,54 @@
 
       <div class="camera-controls">
         <button type="button" id="camera-start-btn" class="btn btn--ghost">Start camera</button>
-        <button type="button" id="camera-capture-btn" class="btn btn--ghost" hidden>Capture</button>
+        <button type="button" id="camera-capture-btn" class="btn btn--ghost" hidden>Take photo</button>
         <button type="button" id="camera-retake-btn" class="btn btn--ghost" hidden>Retake</button>
       </div>
     </div>
 
     <button id="predict-btn" class="btn" disabled>
       <span id="btn-spinner" class="spinner" hidden></span>
-      <span id="btn-label">Classify</span>
+      <span id="btn-label">Sort</span>
     </button>
 
+    <div class="error" id="error-box" hidden role="alert"></div>
+
     <div class="result" id="result" hidden aria-live="polite">
-      <div class="warning-banner" id="warning-banner" hidden>
-        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <div class="warning" id="warning-banner" hidden>
+        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
           <path d="M10 3.5l7.5 13h-15z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
           <path d="M10 8.5v3.2M10 14.2v.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
         </svg>
         <span id="warning-text"></span>
       </div>
 
-      <div class="top-result">
-        <span class="top-result__label" id="top-label"></span>
-        <span class="top-result__pct" id="top-pct"></span>
+      <div class="verdict" id="verdict">
+        <svg class="verdict__bin" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M9 14h30M18 14v-4h12v4M13 14l2 28h18l2-28M21 22v14M27 22v14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="verdict__text">
+          <span class="verdict__label" id="top-label"></span>
+          <span class="verdict__pct" id="top-pct"></span>
+        </div>
       </div>
 
       <div class="prob-list" id="prob-list"></div>
+      <button type="button" id="more-btn" class="link-btn" hidden>Show all</button>
 
-      <button type="button" id="explain-btn" class="btn btn--ghost">Show what the model saw</button>
       <div class="gradcam-box" id="gradcam-box" hidden>
-        <img id="gradcam-img" alt="Grad-CAM heatmap overlay">
-        <p class="gradcam-caption">Warmer areas influenced the prediction more.</p>
+        <img id="gradcam-img" alt="Heatmap of what the model looked at">
+        <p class="gradcam-caption">Warm areas drove the answer.</p>
       </div>
 
-      <button type="button" id="reset-btn" class="btn btn--ghost">New analysis</button>
+      <div class="result__actions">
+        <button type="button" id="explain-btn" class="btn btn--ghost">See why</button>
+        <button type="button" id="reset-btn" class="btn btn--ghost">Try another</button>
+      </div>
     </div>
-
-    <div class="error" id="error-box" hidden role="alert"></div>
 
   </section>
 
-  <footer class="disclaimer">
-    <p>Research project only.</p>
-    <p>Not a guarantee of correct sorting.</p>
-  </footer>
+  <footer class="disclaimer">Research project. Results can be wrong.</footer>
 
 </main>
 
