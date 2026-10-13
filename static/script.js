@@ -204,18 +204,46 @@ function stopCamera() {
 }
 
 // --- Talking to the server ---------------------------------------------------------
+// Phone photos can be 5-10 MB. Shrink them before upload: smaller, faster, and the
+// model works at 224 px anyway. If the browser can't decode the file, send it as is.
+const MAX_SIDE = 1024;
+const shrinkCache = new WeakMap();
+
+async function shrink(blob) {
+  if (shrinkCache.has(blob)) return shrinkCache.get(blob);
+  let out = blob;
+  try {
+    const bmp = await createImageBitmap(blob);
+    const scale = Math.min(1, MAX_SIDE / Math.max(bmp.width, bmp.height));
+    if (scale < 1 || blob.size > 1.5 * 1024 * 1024) {
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(bmp.width * scale);
+      canvas.height = Math.round(bmp.height * scale);
+      canvas.getContext('2d').drawImage(bmp, 0, 0, canvas.width, canvas.height);
+      const small = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.9));
+      if (small && small.size < blob.size) out = small;
+    }
+    if (bmp.close) bmp.close();
+  } catch (err) { /* keep the original */ }
+  shrinkCache.set(blob, out);
+  return out;
+}
+
 async function send(path) {
   const formData = new FormData();
-  formData.append('file', selectedBlob, 'photo.jpg');
+  formData.append('file', await shrink(selectedBlob), 'photo.jpg');
 
   try {
     return await fetch(API_BASE + path, { method: 'POST', body: formData });
   } catch (err) {
-    throw new Error("Can't reach the server. Try again.");
+    throw new Error("Can't reach the server. Check your connection and try again.");
   }
 }
 
 async function readError(res) {
+  if (res.status >= 502 && res.status <= 504) {
+    return 'The server is waking up. Try again in a minute.';
+  }
   try {
     const data = await res.json();
     if (data && typeof data.detail === 'string') return data.detail;
